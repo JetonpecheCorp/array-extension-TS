@@ -1,0 +1,25 @@
+{
+  "name": "@jetonpeche/array-extension",
+  "version": "1.0.0",
+  "description": "Ajout de methodes d'extension au array",
+  "author": "jetonpeche",
+  "main": "dist/Linq.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JetonpecheCorp/array-extension-TS.git"
+  },
+  "keywords": ["array", "linq", "extension"],
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
