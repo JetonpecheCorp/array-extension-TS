@@ -240,7 +240,7 @@ declare global
          * 
          * @param selector propriété à se baser pour compter
          */
-        countBy<U>(selector: (value: T) => U): Array<CountByResult<T>>,
+        countBy<U>(selector: (value: T) => U): Array<CountByResult<U>>,
 
         /**
          * Applique les filtres et recuperer l'element a l'index choisi dans le resultat
@@ -314,8 +314,8 @@ type GroupByResult<T> =
 
 type CountByResult<T> =
 {
-    key: string,
-    value: T
+    key: T,
+    value: number
 }
 
 type ZipResult = 
@@ -769,11 +769,11 @@ Array.prototype.count = function(): number
     return this.select(x => x).length;
 }
 
-Array.prototype.countBy = function<T, U>(selector: (value: T) => U): Array<CountByResult<T>>
+Array.prototype.countBy = function<T, U>(selector: (value: T) => U): Array<CountByResult<U>>
 {
     return this
         .groupBy(selector)
-        .select(x => ({ key: x.key, value: x.value.length }));
+        .select(x => ({ key: x.key as U, value: x.value.length }));
 }
 
 Array.prototype.elementAtOrDefault = function<T>(_index: number): T | null
