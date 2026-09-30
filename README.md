@@ -122,6 +122,7 @@ Terminal methods that apply queued filters and transform the output shape:
 | `firstOrDefault(predicate?)` | Returns the first matching element, or `null` if not found |
 | `lastOrDefault(predicate?)` | Returns the last matching element, or `null` if not found |
 | `elementAtOrDefault(index)` | Retrieves the element at a specific index, or `null` |
+| `toArray()` | Evaluates queued filters and returns the resulting elements as a new array |
 | `toJson()` | Converts the filtered array into a JSON string |
 
 ```ts
@@ -155,6 +156,9 @@ orders.elementAtOrDefault(9); // null
 // ---------------------- toJson: Serialize query result ----------------------
 orders.where(o => o.id === 101).toJson();
 // '[{"id":101,"customer":"Alice","items":["Book","Pen"]}]'
+
+orders.where(o => o.id === 101).toArray();
+// [{"id":101,"customer":"Alice","items":["Book","Pen"]}]
 ```
 
 ### Calculations & Aggregations

@@ -123,6 +123,13 @@ declare global
         toJson(): string;
 
         /**
+         * Evaluates queued filters and returns the resulting elements as a new array.
+         * 
+         * @returns A shallow copy of the filtered array.
+         */
+        toArray(): T[];
+
+        /**
          * Projects each element of a sequence into a new form after applying active filters.
          * 
          * @param selecteur Transform function.
@@ -552,6 +559,11 @@ Array.prototype.skipLast = function <T>(nbElement: number): T[]
 Array.prototype.toJson = function (): string
 {
     return JSON.stringify(obtenirListeFiltree(this));
+};
+
+Array.prototype.toArray = function <T>(): T[] 
+{
+    return obtenirListeFiltree<T>(this);
 };
 
 Array.prototype.select = function <T, U>(selecteur: (value: T, index: number) => U): U[]
