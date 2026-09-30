@@ -1,886 +1,851 @@
-declare global 
+declare global
 {
-    interface Array<T> 
+    interface Array<T>
     {
         /**
-         * Ajouter un filtre OR logique
+         * Appends a logical OR filter to the pipeline.
+         * Filter is evaluated lazily when a terminal method is called.
          * 
-         * @param predicat filtre a appliquer
-         * @returns la liste actuelle non modifier
+         * @param predicat Predicate function to evaluate.
+         * @returns The current array instance for chaining.
          */
-        whereOr(predicat: (value: T, index: number) => unknown): Array<T>,
+        whereOr(predicat: (value: T, index: number) => unknown): Array<T>;
 
         /**
-         * Ajouter un filtre AND logique
+         * Appends a logical AND filter to the pipeline.
+         * Filter is evaluated lazily when a terminal method is called.
          * 
-         * @param predicat filtre a appliquer
-         * @returns la liste actuelle non modifier
+         * @param predicat Predicate function to evaluate.
+         * @returns The current array instance for chaining.
          */
-        where(predicat: (value: T, index: number) => unknown): Array<T>,
+        where(predicat: (value: T, index: number) => unknown): Array<T>;
 
         /**
-         * Verifier qu'un element de la liste rempli la / les condition(s)
+         * Determines whether any element matches the provided condition, 
+         * or whether the collection contains any element.
          * 
-         * @param predicat filtre a appliquer
+         * @param predicat Optional predicate function.
          */
-        any(predicat?: (value: T) => unknown): boolean,
+        any(predicat?: (value: T) => unknown): boolean;
 
         /**
-         * Verifier que tout les elements de la liste satisfait la condition
+         * Determines whether all elements satisfy the provided condition.
          * 
-         * @param predicat filtre à appliquer
+         * @param predicat Optional predicate function.
          */
-        all(predicat?: (value: T) => unknown): boolean,
+        all(predicat?: (value: T) => unknown): boolean;
 
         /**
-         * Addictionner les chiffres
+         * Computes the sum of numeric values or property projections.
          * 
-         * @param predicat la propriété à addiction
+         * @param predicat Optional selector returning a numeric value.
          */
-        sum(predicat?: (value: T) => unknown): number,
+        sum(predicat?: (value: T) => unknown): number;
 
         /**
-         * Recuperer la valeur minimum de la liste
+         * Returns the minimum value in the sequence, or null if empty.
          */
-        min(): T | null,
+        min(): T | null;
 
         /**
-         * Recuperer la valeur maximum de la liste
+         * Returns the maximum value in the sequence, or null if empty.
          */
-        max(): T | null,
+        max(): T | null;
 
         /**
-         * Recuperer l'element avec la valeur minimum de la liste en fonction d'une clé
+         * Invokes a transform function on each element and returns the element with the minimum value.
          * 
-         * @param selector la propriété ciblée
-         * @returns l'element avec la valeur max ou null si liste vide
+         * @param selecteur Value selector.
+         * @returns The item having the minimum value, or null if empty.
          */
-        minBy(selector: (value: T) => number | string | Date): T | null,
+        minBy(selecteur: (value: T) => number | string | Date): T | null;
 
         /**
-         * Recuperer l'element avec la valeur maximum de la liste en fonction d'une clé
+         * Invokes a transform function on each element and returns the element with the maximum value.
          * 
-         * @param selector la propriété ciblée
-         * @returns l'element avec la valeur max ou null si liste vide
+         * @param selecteur Value selector.
+         * @returns The item having the maximum value, or null if empty.
          */
-        maxBy(selector: (value: T) => number | string | Date): T | null,
+        maxBy(selecteur: (value: T) => number | string | Date): T | null;
 
         /**
-         * Calcul la moyenne de la liste
+         * Computes the average of sequence values.
          * 
-         * @param predicat la propriété ciblée
+         * @param predicat Optional selector returning a numeric value.
          */
-        average(predicat?: (value: T) => number): number,
+        average(predicat?: (value: T) => number): number;
 
         /**
-         * Ordonne la liste du plus petit au plus grand ou par ordre alphabetique
+         * Sorts the elements in ascending order according to a key.
          * 
-         * @param predicat la propriété ciblée
+         * @param predicat Key selector.
          */
-        orderBy(predicat: (value: T) => number | string | Date): T[],
+        orderBy(predicat: (value: T) => number | string | Date): T[];
 
         /**
-         * Ordonne la liste du plus grand au plus petit ou par ordre anti-alphabetique
+         * Sorts the elements in descending order according to a key.
          * 
-         * @param predicat la propriété ciblée
+         * @param predicat Key selector.
          */
-        orderByDesc(predicat: (value: T) => number | string | Date): T[],
+        orderByDesc(predicat: (value: T) => number | string | Date): T[];
 
         /**
-         * Prendre un nombre X d'element de la liste à partir du debut
+         * Returns a specified number of contiguous elements from the start of a sequence.
          * 
-         * @param _nb nombre d'element à prendre
+         * @param nbElement Number of elements to take.
          */
-        take(_nb: number): T[],
+        take(nbElement: number): T[];
 
         /**
-         * Prendre un nombre X d'element de la liste à partir de la fin
+         * Returns a specified number of contiguous elements from the end of a sequence.
          * 
-         * @param _nb nombre d'element à prendre
+         * @param nbElement Number of elements to take.
          */
-        takeLast(_nb: number): T[],
+        takeLast(nbElement: number): T[];
 
         /**
-         * Ne pas prendre un nombre X d'element de la liste à partir du debut
+         * Bypasses a specified number of elements and returns the remaining elements.
          * 
-         * @param _nb nombre d'element à passer
+         * @param nbElement Number of elements to bypass.
          */
-        skip(_nb: number): T[],
+        skip(nbElement: number): T[];
 
         /**
-         * Ne pas prendre un nombre X d'element de la liste à partir de la fin
+         * Bypasses a specified number of elements from the end and returns the remaining elements.
          * 
-         * @param _nb nombre d'element à passer
+         * @param nbElement Number of elements to bypass from the end.
          */
-        skipLast(_nb: number): T[],
+        skipLast(nbElement: number): T[];
 
         /**
-         * Appliquer les filtres et récuperer la liste sous forme JSON
+         * Evaluates filters and serializes the resulting sequence to a JSON string.
          */
-        toJson(): string,
+        toJson(): string;
 
         /**
-         * Appliquer les filtres et récuperer la liste
+         * Projects each element of a sequence into a new form after applying active filters.
          * 
-         * @param selector Choisir les infos a récuperer
-         * 
-         * @returns la liste filtrée avec les infos choisient
+         * @param selecteur Transform function.
          */
-        select<U>(selector: (value: T, index: number) => U): U[],
+        select<U>(selecteur: (value: T, index: number) => U): U[];
 
         /**
-         * Appliquer les filtres et récuperer la liste d'un element de la liste source
+         * Projects each element of a sequence to an Iterable and flattens the resulting sequences into one sequence.
          * 
-         * @param listSelector Liste à récuperer
-         * @param resultSelector Acceder à l'index et aux elements de la liste récupérée
-         * 
-         * @returns la liste filtrée avec les infos choisient
+         * @param selecteurCollection Transform function producing an iterable collection.
+         * @param selecteurResultat Optional transform function applied to both source and inner elements.
          */
-        selectMany<U, TResult>(
-            listSelector: (value: T) => Iterable<U>, 
-            resultSelector?: ((sourceValue: T, element: U) => TResult) | null
-        ): (TResult | U)[],
+        selectMany<U, TResultat = U>(
+            selecteurCollection: (value: T) => Iterable<U>,
+            selecteurResultat?: ((sourceElement: T, childElement: U) => TResultat) | null
+        ): TResultat[];
 
         /**
-         * Applique les filtres et recuperer le 1er element du resultat
+         * Returns the first element of a sequence, or null if no element is found.
          * 
-         * @param predicat filtre à appliquer
+         * @param predicat Optional filter predicate.
          */
-        firstOrDefault(predicat?: (value: T, index: number) => unknown): T | null,
+        firstOrDefault(predicat?: (value: T, index: number) => unknown): T | null;
 
         /**
-         * Applique les filtres et recuperer le dernier element du resultat
+         * Returns the last element of a sequence, or null if no element is found.
          * 
-         * @param predicat filtre à appliquer
+         * @param predicat Optional filter predicate.
          */
-        lastOrDefault(predicat?: (value: T, index: number) => unknown): T | null,
+        lastOrDefault(predicat?: (value: T, index: number) => unknown): T | null;
 
         /**
-         * Insérer un element à une position spécifique dans l'instance
+         * Inserts an element or array of elements at the specified index in the current instance.
          * 
-         * @param _index position de l'element dans la liste
-         * @param _object info à rajouter
+         * @param index The zero-based index where item should be inserted.
+         * @param element The element to insert.
          */
-        insert(_index: number, _object: T): void,
+        insert(index: number, element: T | T[]): void;
 
         /**
-         * Supprimer les elements de la liste
+         * Removes elements matching the specified predicate, or elements passing active filters.
          * 
-         * @param predicat filtre à appliquer
+         * @param predicat Optional removal predicate.
          */
-        remove<U>(predicat?: (value: T) => U): void,
+        remove<U>(predicat?: (value: T) => U): void;
 
         /**
-         * Met à jour les clés de l'object la la liste actuelle 
+         * Mutates objects in the filtered sequence by assigning the specified properties.
          * 
-         * @param _info infos à modifier
+         * @param update Properties to assign.
          */
-        update(_info: Partial<T>): void,
+        update(update: Partial<T>): void;
 
         /**
-         * Met à jour une liste d'un element de l'instance actuelle
+         * Mutates target child collections of matching elements.
          * 
-         * @param selector liste à modifier
-         * @param _info info à modifier
+         * @param selecteur Selector returning the child collection to update.
+         * @param update Properties to assign to child items.
          */
-        updateMany<U>(selector: (value: T) => U[], _info: Partial<U>): void,
+        updateMany<U>(selecteur: (value: T) => U[], update: Partial<U>): void;
 
         /**
-         * Regroupe les elements en fonction de la regle
+         * Groups the elements of a sequence according to a specified key selector.
          * 
-         * @param predicat regle à appliquer
-         * 
-         * @returns une nouvelle instance avec les valeurs groupées
+         * @param predicat Function to extract the group key.
          */
-        groupBy<U>(predicat: (value: T) => U): Array<GroupByResult<T>>,
+        groupBy<U>(predicat: (value: T) => U): Array<GroupByResult<T>>;
 
         /**
-         * Recupère les elements sans doublons
-         * 
-         * @returns Une nouvelle instance avec les elements filtrés
+         * Returns distinct elements from a sequence based on deep serialization comparison.
          */
-        distinct(): T[],
+        distinct(): T[];
 
         /**
-         * Recupère les elements sans doublons
+         * Returns distinct elements from a sequence according to a specified key selector.
          * 
-         * @param selector regle d'application du distinct
-         * 
-         * @returns Une nouvelle instance avec les elements filtrés
+         * @param selecteur Function to extract comparison key.
          */
-        distinctBy(selector: (value: T) => unknown): T[],
+        distinctBy<U>(selecteur: (value: T) => U): T[];
 
         /**
-         * Pack les elements en sous ensemble
+         * Splits the elements of a sequence into chunks of given size.
          * 
-         * @param _size nombre d'element par sous ensemble
-         * 
-         * @returns Une nouvelle instance de sous ensemble
+         * @param taille Maximum size of each chunk.
          */
-        chunk(_size: number): T[][],
+        chunk(taille: number): T[][];
 
         /**
-         * Zippe l'instance actuelle avec une liste en paires ou via une fonction  
-         * s'arrête au plus court
+         * Merges two sequences into one sequence by combining elements with matching indices.
          * 
-         * @param _list liste a zipper avec l'instance actuelle
-         * @param selector selecteur de résultat, donne une nouvelle valeur
+         * @param targetList Target sequence to pair with.
+         * @param selecteur Optional projection function for combined elements.
          */
-        zip<U>(_list: U[], selector?: (value: T, value2: U) => unknown): any[] | ZipResult[],
+        zip<U, R = ZipResult<T, U>>(targetList: U[], selecteur?: (value1: T, value2: U) => R): R[];
 
         /**
-         * Applique les filtres et donne le nombre d'element dans le resultat
-         * 
-         * @returns le nombre d'element
+         * Returns the number of elements matching current filters.
          */
-        count(): number,
+        count(): number;
 
         /**
-         * Applique les filtres, regroupe et compte le nombre d'element par groupe
+         * Groups elements and returns the count of items in each group.
          * 
-         * @param selector propriété à se baser pour compter
+         * @param selecteur Function to extract the group key.
          */
-        countBy<U>(selector: (value: T) => U): Array<CountByResult<U>>,
+        countBy<U>(selecteur: (value: T) => U): Array<CountByResult<U>>;
 
         /**
-         * Applique les filtres et recuperer l'element a l'index choisi dans le resultat
+         * Returns the element at a specified index in a sequence or null if the index is out of range.
          * 
-         * @param _index emplacement de l'element a récuperer
-         * @returns l'element ou null
+         * @param index The zero-based index of the element to retrieve.
          */
-        elementAtOrDefault(_index: number): T | null,
+        elementAtOrDefault(index: number): T | null;
 
         /**
-         * Combiner un tableau avec l'instance actuelle tout en supprimant les doublons
+         * Produces the set union of two sequences using deep equality comparison.
          * 
-         * @param _list liste a combiner
-         * 
-         * @returns Nouvelle instance liste
+         * @param liste The sequence whose distinct elements form the second set for the union.
          */
-        union(_list: T[]): T[],
+        union(liste: T[]): T[];
 
         /**
-         * Combiner un tableau avec l'instance actuelle tout en supprimant les doublons
+         * Produces the set union of two sequences according to a specified key selector.
          * 
-         * @param _list liste a combiner
-         * @param selector propriété à se baser pour éliminer les doublons
-         * 
-         * @returns Nouvelle instance liste
+         * @param liste The sequence whose distinct elements form the second set for the union.
+         * @param selecteur Key selector.
          */
-        unionBy<U>(_list: T[], selector: (value: T) => U): T[],
-
-        /**
-         * Recupère les elements sans doublons
-         * 
-         * @returns Une nouvelle instance avec les elements filtrés
-         */
-        distinct(): T[],
-
-        /**
-         * Recupère les elements sans doublons
-         * 
-         * @param selector regle d'application du distinct
-         * 
-         * @returns Une nouvelle instance avec les elements filtrés
-         */
-        distinctBy<U>(selector: (value: T) => U): T[]
+        unionBy<U>(liste: T[], selecteur: (value: T) => U): T[];
     }
 
-    interface ArrayConstructor {
+    interface ArrayConstructor
+    {
         /**
-         * Creer un tableau de nombre a partir de la valeur de debut
+         * Generates a sequence of integral numbers within a specified range.
          * 
-         * @param _start valeur de debut
-         * @param _length longeur de la liste
+         * @param debut Value of the first integer in the sequence.
+         * @param longueur Number of sequential integers to generate.
          */
-        range(_start: number, _length: number): number[],
+        range(debut: number, longueur: number): number[];
 
         /**
-         * Créer un tableau avec X fois la valeur
+         * Generates a sequence that contains one repeated value.
          * 
-         * @param _value valeur à répéter
-         * @param _nb longeur de la liste
+         * @param value The value to repeat.
+         * @param quantite Number of times to repeat the value.
          */
-        repeat<T>(_value: T, _nb: number): Array<T>
+        repeat<T>(value: T, quantite: number): Array<T>;
     }
 }
 
-//#region type
-type GroupByResult<T> =
+type GroupByResult<T> = {
+    key: string;
+    value: T[];
+};
+
+type CountByResult<T> = {
+    key: T;
+    value: number;
+};
+
+type ZipResult<T = any, U = any> = {
+    0: T;
+    1: U;
+};
+
+interface EtatFiltres<T>
 {
-    key: string,
-    value: T
+    where: Array<(value: T, index: number) => unknown>;
+    whereOr: Array<(value: T, index: number) => unknown>;
 }
 
-type CountByResult<T> =
+// Fonction utilitaire pour appliquer et réinitialiser les filtres en attente
+function obtenirListeFiltree<T>(tableau: any): T[]
 {
-    key: T,
-    value: number
-}
+    const filtresActifs: EtatFiltres<T> | undefined = tableau.filtres;
+    delete tableau.filtres;
 
-type ZipResult = 
-{
-    0: any,
-    1: any
-}
-//#endregion
-
-Array.range = function(_start: number, _length: number): number[]
-{
-    if (_length < 0)
-        return [];
-    
-    return Array.from({ length: _length }, (_, i) => _start + i);
-}
-
-Array.repeat = function<T>(_value: T, _nb: number): Array<T>
-{
-    if (_nb < 0)
-        return [];
-    
-    return Array.from({ length: _nb }, (_) => _value);
-}
-
-Array.prototype.where = function<T>(predicat: (value: T, index: number) => unknown): Array<T>
-{
-    if (!(this as any).filtres) 
-        (this as any).filtres = { where: [], whereOr: [] };
-
-    (this as any).filtres.where.push(...[predicat]);
-
-    return this;
-}
-
-Array.prototype.whereOr = function<T>(predicat: (value: T, index: number) => unknown): Array<T>
-{
-    if (!(this as any).filtres) 
-        (this as any).filtres = { where: [], whereOr: [] };
-
-    (this as any).filtres.whereOr.push(...[predicat]);
-
-    return this;
-}
-
-Array.prototype.any = function<T>(predicat?: (value: T) => unknown): boolean
-{
-    if(predicat)
+    if (!filtresActifs)
     {
-        if((this as any).filtres)
-            (this as any).filtres.where.push(predicat); 
+        return tableau.slice();
+    }
 
-        else
+    const { where: filtresAnd, whereOr: filtresOr } = filtresActifs;
+    const aFiltresAnd = filtresAnd.length > 0;
+    const aFiltresOr = filtresOr.length > 0;
+
+    if (!aFiltresAnd && !aFiltresOr)
+    {
+        return tableau.slice();
+    }
+
+    const resultat: T[] = [];
+    for (let i = 0; i < tableau.length; i++)
+    {
+        const element = tableau[i];
+
+        if (aFiltresAnd && !filtresAnd.every(predicat => Boolean(predicat(element, i))))
+        {
+            continue;
+        }
+
+        if (aFiltresOr && !filtresOr.some(predicat => Boolean(predicat(element, i))))
+        {
+            continue;
+        }
+
+        resultat.push(element);
+    }
+
+    return resultat;
+}
+
+Array.range = function (debut: number, longueur: number): number[]
+{
+    if (longueur <= 0) return [];
+    return Array.from({ length: longueur }, (_, index) => debut + index);
+};
+
+Array.repeat = function <T>(value: T, quantite: number): Array<T>
+{
+    if (quantite <= 0) return [];
+    return Array.from({ length: quantite }, () => value);
+};
+
+Array.prototype.where = function <T>(predicat: (value: T, index: number) => unknown): Array<T>
+{
+    const instance = this as any;
+    if (!instance.filtres) instance.filtres = { where: [], whereOr: [] };
+    instance.filtres.where.push(predicat);
+    return this;
+};
+
+Array.prototype.whereOr = function <T>(predicat: (value: T, index: number) => unknown): Array<T>
+{
+    const instance = this as any;
+    if (!instance.filtres) instance.filtres = { where: [], whereOr: [] };
+    instance.filtres.whereOr.push(predicat);
+    return this;
+};
+
+Array.prototype.any = function <T>(predicat?: (value: T) => unknown): boolean
+{
+    const instance = this as any;
+    if (predicat)
+    {
+        if (instance.filtres)
+        {
+            instance.filtres.where.push(predicat);
+        } else
+        {
             return this.some(predicat);
+        }
     }
+    return obtenirListeFiltree<T>(this).length > 0;
+};
 
-    return this.select(x => x).length > 0;
-}
-
-Array.prototype.all = function<T>(predicat?: (value: T) => unknown): boolean
+Array.prototype.all = function <T>(predicat?: (value: T) => unknown): boolean
 {
-    if(predicat)
+    const instance = this as any;
+    if (predicat)
     {
-        if((this as any).filtres)
-            (this as any).filtres.where.push(predicat); 
-
-        else
+        if (instance.filtres)
+        {
+            instance.filtres.where.push(predicat);
+        } else
+        {
             return this.every(predicat);
-    }
-
-    return this.select(x => x).length == this.length;
-}
-
-Array.prototype.sum = function<T>(predicat?: (value: T) => unknown): number
-{
-    let total = 0;
-    let filteredList = this.select(x => x);
-
-    if(predicat)
-    {
-        for (const element of filteredList) 
-        {
-            let truc: any = predicat(element);
-
-            if(!isNaN(truc))
-                total += truc;
         }
     }
-    else
+    return obtenirListeFiltree<T>(this).length === this.length;
+};
+
+Array.prototype.sum = function <T>(predicat?: (value: T) => unknown): number
+{
+    const elements = obtenirListeFiltree<T>(this);
+    let total = 0;
+
+    for (let i = 0; i < elements.length; i++)
     {
-        for (const element of this) 
+        const valueBrute: any = predicat ? predicat(elements[i]) : elements[i];
+        const valueNumerique = Number(valueBrute);
+        if (!isNaN(valueNumerique))
         {
-            if(!isNaN(element))
-                total += element;    
+            total += valueNumerique;
         }
     }
 
     return total;
-}
+};
 
-Array.prototype.min = function<T extends string | number | Date>(): T | null
+Array.prototype.min = function <T extends string | number | Date>(): T | null
 {
-    let liste = this.select(x => x);
+    const elements = obtenirListeFiltree<T>(this);
+    if (elements.length === 0) return null;
 
-    if(liste.length == 0)
-        return null;
-
-    return liste.reduce((elementMin: T, element: T) =>
+    let valueMinimale: T = elements[0];
+    for (let i = 1; i < elements.length; i++)
     {
-        return (element < elementMin) ? element : elementMin;
-    }, liste[0]);
-}
+        if (elements[i] < valueMinimale)
+        {
+            valueMinimale = elements[i];
+        }
+    }
+    return valueMinimale;
+};
 
-Array.prototype.minBy = function<T>(selector: (value: T) => number | string | Date): T | null
+Array.prototype.minBy = function <T>(selecteur: (value: T) => number | string | Date): T | null
 {
-    let liste = this.select(x => x);
+    const elements = obtenirListeFiltree<T>(this);
+    if (elements.length === 0) return null;
 
-    if(liste.length == 0)
-        return null;
+    let elementMinimal = elements[0];
+    let valueMinimale = selecteur(elementMinimal);
 
-    return liste.reduce((elementMin: T, element: T) =>
+    for (let i = 1; i < elements.length; i++)
     {
-        const VALEUR_MIN = selector(elementMin);
-        const VALEUR_ACTUELLE = selector(element);
+        const valueActuelle = selecteur(elements[i]);
+        if (valueActuelle < valueMinimale)
+        {
+            valueMinimale = valueActuelle;
+            elementMinimal = elements[i];
+        }
+    }
+    return elementMinimal;
+};
 
-        return (VALEUR_ACTUELLE < VALEUR_MIN) ? element : elementMin;
-
-    }, liste[0]);
-}
-
-Array.prototype.max = function<T extends string | number | Date>(): T | null
+Array.prototype.max = function <T extends string | number | Date>(): T | null
 {
-    let liste = this.select(x => x);
+    const elements = obtenirListeFiltree<T>(this);
+    if (elements.length === 0) return null;
 
-    if(liste.length == 0)
-        return null;
-
-    return liste.reduce((elementMax: T, element: T) =>
+    let valueMaximale: T = elements[0];
+    for (let i = 1; i < elements.length; i++)
     {
-        return (element > elementMax) ? element : elementMax;
-    }, liste[0]);
-}
+        if (elements[i] > valueMaximale)
+        {
+            valueMaximale = elements[i];
+        }
+    }
+    return valueMaximale;
+};
 
-Array.prototype.maxBy = function<T>(selector: (value: T) => number | string | Date): T | null
+Array.prototype.maxBy = function <T>(selecteur: (value: T) => number | string | Date): T | null
 {
-    let liste = this.select(x => x);
+    const elements = obtenirListeFiltree<T>(this);
+    if (elements.length === 0) return null;
 
-    if(liste.length == 0)
-        return null;
+    let elementMaximal = elements[0];
+    let valueMaximale = selecteur(elementMaximal);
 
-    return liste.reduce((elementMax: T, element: T) =>
+    for (let i = 1; i < elements.length; i++)
     {
-        const VALEUR_MAX = selector(elementMax);
-        const VALEUR_ACTUELLE = selector(element);
+        const valueActuelle = selecteur(elements[i]);
+        if (valueActuelle > valueMaximale)
+        {
+            valueMaximale = valueActuelle;
+            elementMaximal = elements[i];
+        }
+    }
+    return elementMaximal;
+};
 
-        return (VALEUR_ACTUELLE > VALEUR_MAX) ? element : elementMax;
-
-    }, liste[0]);
-}
-
-Array.prototype.average = function<T>(predicat?: (value: T) => number): number
+Array.prototype.average = function <T>(predicat?: (value: T) => number): number
 {
+    const elements = obtenirListeFiltree<T>(this);
+    if (elements.length === 0) return 0;
+
     let total = 0;
-    let liste = this.select(x => x);
-
-    if(predicat)
+    for (let i = 0; i < elements.length; i++)
     {
-        for (const element of liste) 
+        const valueBrute: any = predicat ? predicat(elements[i]) : elements[i];
+        const valueNumerique = Number(valueBrute);
+        if (!isNaN(valueNumerique))
         {
-            let truc = predicat(element);
-
-            if(!isNaN(truc))
-                total += truc;
+            total += valueNumerique;
         }
     }
-    else
-    {
-        for (const element of this) 
-        {
-            if(!isNaN(element))
-                total += element;    
-        }
-    }
+    return total / elements.length;
+};
 
-    total /= liste.length;
-
-    return total;
-}
-
-Array.prototype.orderBy = function<T>(predicat: (value: T) => number | string | Date): T[]
+Array.prototype.orderBy = function <T>(predicat: (value: T) => number | string | Date): T[]
 {
-    let liste = this.select(x => x);
-
-    return liste.sort((a: T, b: T) =>
+    return obtenirListeFiltree<T>(this).sort((elementA: T, elementB: T) =>
     {
-        const A = predicat(a);
-        const B = predicat(b);
-
-        if(A < B)
-            return -1;
-
-        if(A > B)
-            return 1;
-
-        return 0;
+        const cleA = predicat(elementA);
+        const cleB = predicat(elementB);
+        return cleA < cleB ? -1 : cleA > cleB ? 1 : 0;
     });
-}
+};
 
-Array.prototype.orderByDesc = function<T>(predicat: (value: T) => number | string | Date): T[]
+Array.prototype.orderByDesc = function <T>(predicat: (value: T) => number | string | Date): T[]
 {
-    let liste = this.select(x => x);
-
-    return liste.sort((a: T, b: T) =>
+    return obtenirListeFiltree<T>(this).sort((elementA: T, elementB: T) =>
     {
-        const A = predicat(a);
-        const B = predicat(b);
-
-        if(A < B)
-            return 1;
-
-        if(A > B)
-            return -1;
-
-        return 0;
+        const cleA = predicat(elementA);
+        const cleB = predicat(elementB);
+        return cleA < cleB ? 1 : cleA > cleB ? -1 : 0;
     });
-}
+};
 
-Array.prototype.take = function<T>(_nb: number): T[]
+Array.prototype.take = function <T>(nbElement: number): T[]
 {
-    return this.select(x => x).splice(0, _nb);
-}
+    if (nbElement <= 0) return [];
+    return obtenirListeFiltree<T>(this).slice(0, nbElement);
+};
 
-Array.prototype.takeLast = function<T>(_nb: number): T[]
+Array.prototype.takeLast = function <T>(nbElement: number): T[]
 {
-    let liste = this.select(x => x);
+    if (nbElement <= 0) return [];
+    const elements = obtenirListeFiltree<T>(this);
+    return elements.slice(Math.max(0, elements.length - nbElement));
+};
 
-    return liste.splice(liste.length - _nb);
-}
-
-Array.prototype.skip = function<T>(_nb: number): T[]
+Array.prototype.skip = function <T>(nbElement: number): T[]
 {
-    let liste = this.select(x => x);
+    if (nbElement <= 0) return obtenirListeFiltree<T>(this);
+    return obtenirListeFiltree<T>(this).slice(nbElement);
+};
 
-    return liste.splice(_nb);
-}
-
-Array.prototype.skipLast = function<T>(_nb: number): T[]
+Array.prototype.skipLast = function <T>(nbElement: number): T[]
 {
-    let liste = this.select(x => x);
+    if (nbElement <= 0) return obtenirListeFiltree<T>(this);
+    const elements = obtenirListeFiltree<T>(this);
+    return elements.slice(0, Math.max(0, elements.length - nbElement));
+};
 
-    return liste.splice(0, liste.length - _nb);
-}
-
-Array.prototype.toJson = function(): string
+Array.prototype.toJson = function (): string
 {
-    return JSON.stringify(this.select(x => x));
-}
+    return JSON.stringify(obtenirListeFiltree(this));
+};
 
-Array.prototype.select = function<T, U>(selector: (value: T, index: number) => U): U[]
+Array.prototype.select = function <T, U>(selecteur: (value: T, index: number) => U): U[]
 {
-    let listeClone = [...this];
+    const elements = obtenirListeFiltree<T>(this);
+    return elements.map(selecteur);
+};
 
-    if(!(this as any).filtres)
-        return listeClone.map(selector);
+Array.prototype.selectMany = function <T, U, TResultat = U>(
+    selecteurCollection: (value: T) => Iterable<U>,
+    selecteurResultat?: ((sourceElement: T, childElement: U) => TResultat) | null
+): TResultat[]
+{
+    const listeFinale: TResultat[] = [];
+    const source = obtenirListeFiltree<T>(this);
 
-    // Appliquer les filtres where (AND logique)
-    if ((this as any).filtres.where.length > 0) 
-        listeClone = listeClone.filter(x => (this as any).filtres.where.every((predicate: any) => predicate(x)));
-
-    // Appliquer les filtres whereOr (OR logique entre les conditions)
-    if ((this as any).filtres.whereOr.length > 0) 
+    for (let i = 0; i < source.length; i++)
     {
-        const LISTE_FILTRER_OU = this.filter(x => (this as any).filtres.whereOr.some((predicate: any) => predicate(x)));
-        // Combiner les résultats du where (AND) et du whereOr (OR)
-        // Un élément doit passer le AND ET (au moins un des OR)
-        listeClone = listeClone.filter(x => LISTE_FILTRER_OU.includes(x));
-    }
+        const elementParent = source[i];
+        const collection = selecteurCollection(elementParent);
 
-    delete (this as any).filtres;
-
-    return listeClone.map(selector);
-}
-
-Array.prototype.selectMany = function<T, U, TResult>(
-    listSelector: (value: T) => Iterable<U>, 
-    resultSelector?: ((sourceValue: T, element: U) => TResult) | null
-): (TResult | U)[]
-{
-    const LISTE_RETOUR = [];
-    const SOURCE = this.select(x => x);
-
-    for (const element of SOURCE) 
-    {
-        const collection = listSelector(element);
-
-        if (collection && typeof collection[Symbol.iterator] === 'function') 
+        if (collection && typeof collection[Symbol.iterator] === "function")
         {
-            // donne la liste cible ou donne l'element actuelle et les infos de la liste cible
-            for (const element2 of collection) 
-                LISTE_RETOUR.push(resultSelector ? resultSelector(element, element2) : element2);
+            for (const childElement of collection)
+            {
+                listeFinale.push(
+                    selecteurResultat
+                        ? selecteurResultat(elementParent, childElement)
+                        : (childElement as unknown as TResultat)
+                );
+            }
         }
     }
 
-    return LISTE_RETOUR;
-}
+    return listeFinale;
+};
 
-Array.prototype.firstOrDefault = function<T>(predicat?: (value: T, index: number) => unknown): T | null
+Array.prototype.firstOrDefault = function <T>(predicat?: (value: T, index: number) => unknown): T | null
 {
-    return predicat ? this.find(predicat) : this.select(x => x)[0];
-}
-
-Array.prototype.lastOrDefault = function<T>(predicat?: (value: T, index: number) => unknown): T | null
-{
-    let liste = [];
-
-    if(predicat)
-        liste = this.filter(predicat);
-    else
+    const elements = obtenirListeFiltree<T>(this);
+    if (!predicat)
     {
-        liste = this.select(x => x);  
-
-        if(liste.length == 0)
-            return null;    
+        return elements.length > 0 ? elements[0] : null;
     }
+    return elements.find(predicat) ?? null;
+};
 
-    return liste[liste.length - 1];
-
-}
-
-Array.prototype.insert = function<T>(_index: number, _object: T): void
+Array.prototype.lastOrDefault = function <T>(predicat?: (value: T, index: number) => unknown): T | null
 {
-    if(Array.isArray(_object))
-        this.splice(_index, 0, ...[_object]);
-
-    else
-        this.splice(_index, 0, _object);
-}
-
-Array.prototype.remove = function<T, U>(predicat?: (value: T) => U): void
-{
-    if(this.length == 0)
-        return;
-    
-    if(predicat)
+    const elements = obtenirListeFiltree<T>(this);
+    if (predicat)
     {
-        for (let i = this.length - 1; i >= 0; i--) 
+        for (let i = elements.length - 1; i >= 0; i--)
+        {
+            if (predicat(elements[i], i))
+            {
+                return elements[i];
+            }
+        }
+        return null;
+    }
+    return elements.length > 0 ? elements[elements.length - 1] : null;
+};
+
+Array.prototype.insert = function <T>(index: number, element: T | T[]): void
+{
+    if (Array.isArray(element))
+    {
+        this.splice(index, 0, ...element);
+    } else
+    {
+        this.splice(index, 0, element);
+    }
+};
+
+Array.prototype.remove = function <T, U>(predicat?: (value: T) => U): void
+{
+    if (this.length === 0) return;
+
+    if (predicat)
+    {
+        for (let i = this.length - 1; i >= 0; i--)
         {
             if (predicat(this[i]))
+            {
                 this.splice(i, 1);
+            }
         }
-    }
-    else
+    } else
     {
-        const LISTE_A_SUPPRIMER = [...this.select(x => x)];
-
-        // Itérer à l'envers pour éviter les problèmes d'indices
-        for (let i = this.length - 1; i >= 0; i--) 
+        const elementsASupprimer = new Set(obtenirListeFiltree<T>(this));
+        for (let i = this.length - 1; i >= 0; i--)
         {
-            if (LISTE_A_SUPPRIMER.includes(this[i])) 
+            if (elementsASupprimer.has(this[i]))
+            {
                 this.splice(i, 1);
+            }
         }
-    }       
-}
-
-Array.prototype.update = function<T>(_info: Partial<T>): void
-{
-    for (const element of this.select(x => x)) 
-    {
-        if (typeof element === 'object' && element !== null)
-            Object.assign(element, _info);
     }
-}
+};
 
-Array.prototype.updateMany = function<T, U>(selector: (value: T) => U[], _info: Partial<U>): void
+Array.prototype.update = function <T>(update: Partial<T>): void
 {
-    for (const element of this.select(x => x))
+    const elements = obtenirListeFiltree<T>(this);
+    for (let i = 0; i < elements.length; i++)
     {
-        const LISTE_CIBLE = selector(element);
-        
-        if (!Array.isArray(LISTE_CIBLE))
-            continue;
-
-        for (const target of LISTE_CIBLE) 
+        const item = elements[i];
+        if (item !== null && typeof item === "object")
         {
-            if (typeof target === 'object' && target !== null) 
-                Object.assign(target, _info);
+            Object.assign(item, update);
         }
     }
-}
+};
 
-Array.prototype.groupBy = function<T, U>(predicat: (value: T) => U): Array<GroupByResult<T>>
+Array.prototype.updateMany = function <T, U>(selecteur: (value: T) => U[], update: Partial<U>): void
 {
-    const map = new Map();
-
-    for (const element of this.select(x => x)) 
+    const elements = obtenirListeFiltree<T>(this);
+    for (let i = 0; i < elements.length; i++)
     {
-        let cle = predicat(element);
+        const collectionCible = selecteur(elements[i]);
+        if (!Array.isArray(collectionCible)) continue;
 
-        if (!map.has(cle)) 
-            map.set(cle, []);
+        for (let j = 0; j < collectionCible.length; j++)
+        {
+            const elementCible = collectionCible[j];
+            if (elementCible !== null && typeof elementCible === "object")
+            {
+                Object.assign(elementCible, update);
+            }
+        }
+    }
+};
 
-        map.get(cle).push(element);
+Array.prototype.groupBy = function <T, U>(predicat: (value: T) => U): Array<GroupByResult<T>>
+{
+    const tableGroupes = new Map<string, T[]>();
+    const elements = obtenirListeFiltree<T>(this);
+
+    for (let i = 0; i < elements.length; i++)
+    {
+        const item = elements[i];
+        const cle = String(predicat(item));
+        const groupeExistant = tableGroupes.get(cle);
+
+        if (groupeExistant)
+        {
+            groupeExistant.push(item);
+        } else
+        {
+            tableGroupes.set(cle, [item]);
+        }
     }
 
-    // conversion map en array en gardant les clés
-    let liste = [];
-    for(const element of map)
+    const resultat: Array<GroupByResult<T>> = [];
+    for (const [key, value] of tableGroupes)
     {
-        liste.push({
-            key: element["0"],
-            value: element["1"]
-        });
+        resultat.push({ key, value });
     }
 
-    return liste;
-}
+    return resultat;
+};
 
-Array.prototype.chunk = function<T>(_size: number): T[][]
+Array.prototype.chunk = function <T>(taille: number): T[][]
 {
-    let liste = this.select<T>(x => x);
+    if (taille <= 0) return [[]];
 
-    if(_size <= 0)
-        return [[]];
+    const elements = obtenirListeFiltree<T>(this);
+    const listeGroupes: T[][] = [];
 
-    let listeRetour = [];
-
-    for (let i = 0; i < liste.length; i += _size) 
+    for (let i = 0; i < elements.length; i += taille)
     {
-        let chunk = this.slice(i, i + _size);
-        listeRetour.push(chunk);
+        listeGroupes.push(elements.slice(i, i + taille));
     }
 
-    return listeRetour;
+    return listeGroupes;
+};
+
+Array.prototype.zip = function <T, U, R = ZipResult<T, U>>(targetList: U[], selecteur?: (value1: T, value2: U) => R): R[]
+{
+    const resultat: R[] = [];
+    const elementsSource = obtenirListeFiltree<T>(this);
+    const longueurMinimale = Math.min(targetList.length, elementsSource.length);
+
+    for (let i = 0; i < longueurMinimale; i++)
+    {
+        resultat.push(
+            selecteur
+                ? selecteur(elementsSource[i], targetList[i])
+                : ({ 0: elementsSource[i], 1: targetList[i] } as unknown as R)
+        );
+    }
+
+    return resultat;
+};
+
+Array.prototype.count = function (): number
+{
+    return obtenirListeFiltree(this).length;
+};
+
+Array.prototype.countBy = function <T, U>(selecteur: (value: T) => U): Array<CountByResult<U>>
+{
+    const tableOccurrences = new Map<U, number>();
+    const elements = obtenirListeFiltree<T>(this);
+
+    for (let i = 0; i < elements.length; i++)
+    {
+        const cle = selecteur(elements[i]);
+        tableOccurrences.set(cle, (tableOccurrences.get(cle) ?? 0) + 1);
+    }
+
+    const resultat: Array<CountByResult<U>> = [];
+    for (const [key, value] of tableOccurrences)
+    {
+        resultat.push({ key, value });
+    }
+
+    return resultat;
+};
+
+Array.prototype.elementAtOrDefault = function <T>(index: number): T | null
+{
+    const elements = obtenirListeFiltree<T>(this);
+    return elements[index] ?? null;
+};
+
+Array.prototype.union = function <T>(liste: T[]): T[]
+{
+    return obtenirListeFiltree<T>(this).concat(liste).distinct();
+};
+
+Array.prototype.unionBy = function <T, U>(liste: T[], selecteur: (value: T) => U): T[]
+{
+    return obtenirListeFiltree<T>(this).concat(liste).distinctBy(selecteur);
+};
+
+// Sérialisation stable pour dédoublonner objets et tableaux
+function serialiserCle(objet: any): string
+{
+    if (objet === null || typeof objet !== "object")
+    {
+        return JSON.stringify(objet);
+    }
+
+    if (Array.isArray(objet))
+    {
+        return `[${objet.map(serialiserCle).sort().join(",")}]`;
+    }
+
+    const clesTriees = Object.keys(objet).sort();
+    const proprietes = clesTriees.map(cle => `"${cle}":${serialiserCle(objet[cle])}`);
+    return `{${proprietes.join(",")}}`;
 }
 
-Array.prototype.zip = function<T, U>(_list: U[], selector?: (value: T, value2: U) => unknown): any[] | ZipResult[]
+Array.prototype.distinct = function <T>(): T[]
 {
-    const LISTE_RETOUR = [];
-
-    let listeInstance = this.select(x => x);
-    const LONGEUR_MAX = Math.min(_list.length, listeInstance.length);
-
-    for (let i = 0; i < LONGEUR_MAX; i++) 
-        LISTE_RETOUR.push(selector ? selector(listeInstance[i], _list[i]) : { "0": listeInstance[i], "1": _list[i] });   
-
-    return LISTE_RETOUR;
-}
-
-Array.prototype.count = function(): number
-{
-    return this.select(x => x).length;
-}
-
-Array.prototype.countBy = function<T, U>(selector: (value: T) => U): Array<CountByResult<U>>
-{
-    return this
-        .groupBy(selector)
-        .select(x => ({ key: x.key as U, value: x.value.length }));
-}
-
-Array.prototype.elementAtOrDefault = function<T>(_index: number): T | null
-{
-    return this.select(x => x)[_index] ?? null;
-}
-
-Array.prototype.union = function<T>(_list: T[]): T[]
-{
-    return this.concat(_list).distinct();
-}
-
-Array.prototype.unionBy = function<T, U>(_list: T[], selector: (value: T) => U): T[]
-{
-    return this.concat(_list).distinctBy(selector);
-}
-
-Array.prototype.distinct = function <T>(): T[] 
-{
-    const seen = new Set<string>();
+    const clesUniques = new Set<string>();
     const resultat: T[] = [];
+    const elements = obtenirListeFiltree<T>(this);
 
-    function serializeAndSort(_obj: any): string 
+    for (let i = 0; i < elements.length; i++)
     {
-        // Gère les types primitifs et null
-        if (_obj === null || typeof _obj !== 'object')
-            return JSON.stringify(_obj);
-
-        // Sérialise et trie les tableaux
-        if (Array.isArray(_obj)) 
+        const element = elements[i];
+        const cle = serialiserCle(element);
+        if (!clesUniques.has(cle))
         {
-            const serializedElements = _obj.map(serializeAndSort).sort();
-            return `[${serializedElements.join(',')}]`;
-        }
-
-        // Sérialise et trie les propriétés des objets
-        const sortedKeys = Object.keys(_obj).sort();
-
-        const serializedProps = sortedKeys.map(key => 
-        {
-            const value = serializeAndSort(_obj[key]);
-            return `"${key}":${value}`;
-        });
-
-        return `{${serializedProps.join(',')}}`;
-    }
-
-    for (const element of this.select(x => x)) 
-    {
-        const serialized = serializeAndSort(element);
-
-        if (!seen.has(serialized)) 
-        {
-            seen.add(serialized);
+            clesUniques.add(cle);
             resultat.push(element);
         }
     }
 
-  return resultat;
-}
+    return resultat;
+};
 
-Array.prototype.distinctBy = function <T, U>(selector: (value: T) => U): T[] 
+Array.prototype.distinctBy = function <T, U>(selecteur: (value: T) => U): T[]
 {
-    const seen = new Set<any>();
+    const clesUniques = new Set<any>();
     const resultat: T[] = [];
+    const elements = obtenirListeFiltree<T>(this);
 
-    function serializeAndSort(_obj: any): any 
+    for (let i = 0; i < elements.length; i++)
     {
-        // Gère les types primitifs et null
-        if (_obj === null || typeof _obj !== 'object')
-            return _obj;
+        const element = elements[i];
+        const valueCle = selecteur(element);
+        const cleFinale = (valueCle === null || typeof valueCle !== "object") ? valueCle : serialiserCle(valueCle);
 
-        // Sérialise et trie les tableaux
-        if (Array.isArray(_obj))
-            return JSON.stringify(_obj.map(serializeAndSort).sort());
-
-        // Sérialise et trie les propriétés des objets
-        const sortedKeys = Object.keys(_obj).sort();
-        const serialized: any = {};
-        
-        for (const key of sortedKeys)
-            serialized[key] = serializeAndSort(_obj[key]);
-
-        return JSON.stringify(serialized);
-    }
-
-    for (const element of this.select(x => x)) 
-    {
-        const key = selector(element);
-        let serializedKey: any;
-
-        // Pour les valeurs primitives, pas besoin de sérialisation
-        if (key === null || typeof key !== 'object')
-            serializedKey = key;
-
-        // Pour les objets et tableaux, on les sérialise pour une comparaison stable
-        else
-            serializedKey = serializeAndSort(key);
-
-        if (!seen.has(serializedKey)) 
+        if (!clesUniques.has(cleFinale))
         {
-            seen.add(serializedKey);
+            clesUniques.add(cleFinale);
             resultat.push(element);
         }
     }
 
-  return resultat;
-}
+    return resultat;
+};
 
-export {}
+export { };

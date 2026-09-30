@@ -1,7 +1,7 @@
 {
   "name": "@jetonpeche/array-extension",
-  "version": "1.0.0",
-  "description": "Ajout de methodes d'extension au array",
+  "version": "1.1.0",
+  "description": "A lightweight LINQ implementation for TypeScript arrays with deferred execution, fluent querying, and deterministic deep deduplication.",
   "author": "jetonpeche",
   "main": "dist/Linq.js",
   "files": [
@@ -14,7 +14,21 @@
     "type": "git",
     "url": "https://github.com/JetonpecheCorp/array-extension-TS.git"
   },
-  "keywords": ["array", "linq", "extension"],
+  "keywords": [
+    "linq",
+    "typescript",
+    "array-extensions",
+    "deferred-execution",
+    "lazy-evaluation",
+    "fluent-api",
+    "where",
+    "select",
+    "distinct",
+    "group-by",
+    "collection-utils",
+    "functional-programming",
+    "csharp-in-ts"
+  ],
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
